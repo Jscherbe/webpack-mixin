@@ -1,6 +1,6 @@
 {
   "name": "@ulu/webpack-mixin",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Base webpack config for developing traditional sites/themes. Not SPA setup. Includes things commonly needed: SASS, extract CSS, proxy server, etc",
   "main": "index.js",
   "scripts": {
@@ -22,7 +22,8 @@
     "scss",
     "webpack.config.js",
     "mixin",
-    "autoprefixer"
+    "autoprefixer",
+    "proxy"
   ],
   "author": "Joe Scherben",
   "license": "MIT",

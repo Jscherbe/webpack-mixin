@@ -1,37 +1,3 @@
-// =============================================================================
-// Webpack Base Configuration
-// =============================================================================
-
-// Description:     Reusable basic webpack config
-
-// Features:        - Babel Transpiling
-//                  - SASS (scss), css is extracted
-//                  - Images directory copy and images can be required
-//                  - Image conpression
-//                  - Dev server setup to proxy local server (ie. MAMP)
-//                  - Webpack Analyse Utility
-//                  - Default webpack configuration
-//                  - Vue SFC's
-//                  - Vue SFC's
-
-// Note:            - All files are assumed to be within "./src/"
-//                  - Bundles are printed to "./dist/"
-//                  - Overriding: You can override by merging on top of this config. 
-//                  - Changing entry/output paths: Pass relative paths in the following 
-//                    (env) variables "relativeEntryDir" or "relativeOutputDir". Remeber to update 
-//                    webpack config.context to match the entry director.
-
-// Folder Structure:
-//                  - src/ (processed assets)
-//                    - js/
-//                    - scss/
-//                    - images/
-//                    - main.js (entry point)
-//                  - dist/ (bundled assets)
-//                  - webpack.config.js (your config or this one)
-//                  - .browserlistrc (configure polyfills babel/core-js, autoprefixer, other tools)
-//                  - .babel.config.js (babel configuration)
-
 const path                    = require('path');
 const BundleAnalyzerPlugin    = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
 const MiniCssExtractPlugin    = require("mini-css-extract-plugin");
