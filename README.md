@@ -1,3 +1,5 @@
+# Webpack Mixin
+
 Reusable webpack config for developing traditional sites/themes. Includes things commonly needed, and is setup for proxying the Webpack dev server
 
 - Includes configured webpack merge

@@ -14,12 +14,19 @@ const objectWhen              = (cond, obj) => cond ? obj : {};
 const pluginWhen              = (cond, Plugin, opts = {}) => cond ? [ new Plugin(opts) ] : [];
 
 /**
- * Copy of webpack-merge
- * - This way we can change settings on merge plugin if needed
+ * Uses webpack-merge
+ * - This way we can 
+ * - future, could hook in to configure merge settings
+ * @param configs See webpack-merge
+ * @example
+ *   const { mixin, merge } = require("@ulu/webpack-mixin");
+ *   const overrides = { devtool: false };
+ *   module.exports = (env, argv) => merge(mixin(env, argv), overrides);
  */
 exports.merge = (...configs) => {
   return merge(...configs);
 };
+
 /**
  * Webpack Base Mixin
  * @param {Object} env Enviroment object passed to webpack.config.js when using a function
@@ -28,6 +35,9 @@ exports.merge = (...configs) => {
  * @param {String} opts.relativeEntryDir Relative path to entry folder
  * @param {String} opts.relativeOutputDir Relative path to output folder
  * @param {String} opts.baseDir Base directory for all paths (ie. usually __dirname, defaults to cwd())
+ * @example
+ *   const { mixin } = require("@ulu/webpack-mixin");
+ *   module.exports = mixin;
  */
 exports.mixin = (env, argv, opts) => {
 
@@ -38,7 +48,7 @@ exports.mixin = (env, argv, opts) => {
     sassAdditionalData: "",
     imageminJpegQuality: 75,
     imageminJpegProgressive: true,
-    imageminPngQuality: "75-85",
+    imageminPngQuality: "75-85"
   };
   const { analyze } = env;
   const dev = argv.mode === "development";
@@ -92,6 +102,7 @@ exports.mixin = (env, argv, opts) => {
         {
           test: /\.m?js$/,
           exclude: /node_modules/,
+          include: /@ulu/,
           use: {
             loader: 'babel-loader',
             options: {
