@@ -1,0 +1,63 @@
+{
+  "name": "@ulu/webpack-mixin",
+  "version": "1.0.0",
+  "description": "Base webpack config for developing traditional sites/themes. Not SPA setup. Includes things commonly needed: SASS, extract CSS, proxy server, etc",
+  "main": "index.js",
+  "scripts": {
+    "serve": "webpack serve --mode development --progress --stats minimal ",
+    "build": "webpack build --mode production --progress --stats minimal",
+    "analyze": "webpack build --mode production --progress --stats minimal --env analyze",
+    "watch": "webpack watch --mode production --stats minimal",
+    "webpack-help": "webpack --help",
+    "debug-configs": "webpack build --mode production --stats minimal --env debugConfigMerge",
+    "debug-verbose": "webpack build --mode production --stats verbose"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://Jscherbe@github.com/Jscherbe/webpack-mixin.git"
+  },
+  "keywords": [
+    "webpack",
+    "sass",
+    "scss",
+    "webpack.config.js",
+    "mixin",
+    "autoprefixer"
+  ],
+  "author": "Joe Scherben",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/Jscherbe/webpack-mixin/issues"
+  },
+  "homepage": "https://github.com/Jscherbe/webpack-mixin#readme",
+  "dependencies": {
+    "@babel/core": "^7.15.5",
+    "@babel/preset-env": "^7.15.6",
+    "autoprefixer": "^10.3.6",
+    "babel-loader": "^8.2.2",
+    "chalk": "^2.4.2",
+    "copy-webpack-plugin": "^9.0.1",
+    "css-loader": "^6.3.0",
+    "html-webpack-plugin": "^5.3.2",
+    "imagemin-mozjpeg": "^9.0.0",
+    "imagemin-webpack-plugin": "^2.4.2",
+    "mini-css-extract-plugin": "^2.3.0",
+    "postcss": "^8.3.8",
+    "postcss-loader": "^6.1.1",
+    "sass": "^1.42.1",
+    "sass-loader": "^12.1.0",
+    "style-loader": "^3.3.0",
+    "vue-loader": "^15.9.8",
+    "vue-template-compiler": "^2.6.14",
+    "webpack": "^5.56.1",
+    "webpack-bundle-analyzer": "^4.4.2",
+    "webpack-cli": "^4.8.0",
+    "webpack-dev-server": "^4.3.0",
+    "webpack-merge": "^5.8.0",
+    "webpack-messages": "^2.0.4",
+    "yaml-loader": "^0.6.0"
+  },
+  "devDependencies": {
+    "vue": "^2.6.14"
+  }
+}
