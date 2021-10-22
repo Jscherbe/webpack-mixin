@@ -10,4 +10,4 @@ module.exports = (env, argv) => {
   return merge(base, {
     // Local config
   });
-}
+};

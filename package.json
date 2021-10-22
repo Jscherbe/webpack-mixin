@@ -4,7 +4,7 @@
   "description": "Base webpack config for developing traditional sites/themes. Not SPA setup. Includes things commonly needed: SASS, extract CSS, proxy server, etc",
   "main": "index.js",
   "scripts": {
-    "serve": "webpack serve --mode development --progress --stats minimal ",
+    "serve": "webpack serve --mode development --progress --stats minimal",
     "build": "webpack build --mode production --progress --stats minimal",
     "analyze": "webpack build --mode production --progress --stats minimal --env analyze",
     "watch": "webpack watch --mode production --stats minimal",
@@ -42,6 +42,8 @@
     "html-webpack-plugin": "^5.3.2",
     "imagemin-mozjpeg": "^9.0.0",
     "imagemin-webpack-plugin": "^2.4.2",
+    "less": "^4.1.2",
+    "less-loader": "^10.2.0",
     "mini-css-extract-plugin": "^2.3.0",
     "postcss": "^8.3.8",
     "postcss-loader": "^6.1.1",

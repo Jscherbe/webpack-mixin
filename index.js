@@ -46,6 +46,7 @@ exports.mixin = (env, argv, opts) => {
     relativeOutputDir: "dist/",
     baseDir: process.cwd(),
     sassAdditionalData: "",
+    lessAdditionalData: "",
     imageminJpegQuality: 75,
     imageminJpegProgressive: true,
     imageminPngQuality: "75-85"
@@ -122,44 +123,30 @@ exports.mixin = (env, argv, opts) => {
           test: /\.vue$/, 
           use: 'vue-loader'
         },
-        {
-          test: /\.scss$/i,
-          use: [
-            {
-              loader: MiniCssExtractPlugin.loader
-            },
-            {
-              loader: "css-loader",
-              options: {
-                sourceMap: true,
-              },
-            },
-            {
-              loader: "postcss-loader",
-              options: {
-                postcssOptions: {
-                  plugins: [
-                    [
-                      "autoprefixer", {},
-                    ],
-                  ],
-                },
-              },
-            },
-            {
-              loader: "sass-loader",
-              options: {
-                sourceMap: true,
-                additionalData: options.sassAdditionalData,
-                sassOptions: {
-                  includePaths: [
-                    path.resolve(baseDir, `${ relativeEntryDir }scss/`)
-                  ]
-                }
-              },
+        addPreprocessLoader(/\.scss$/i, {
+          loader: "sass-loader",
+          options: {
+            sourceMap: true,
+            additionalData: options.sassAdditionalData,
+            sassOptions: {
+              includePaths: [
+                path.resolve(baseDir, `${ relativeEntryDir }scss/`)
+              ]
             }
-          ],
-        },
+          },
+        }),
+        addPreprocessLoader(/\.less$/i, {
+          loader: "less-loader",
+          options: {
+            sourceMap: true,
+            additionalData: options.lessAdditionalData,
+            lessOptions: {
+              paths: [
+                path.resolve(baseDir, `${ relativeEntryDir }less/`)
+              ]
+            }
+          },
+        }),
         {
           test: /\.jpe?g$|\.gif$|\.png$|\.PNG$|\.svg$/,
           type: 'asset/resource',
@@ -225,3 +212,29 @@ exports.mixin = (env, argv, opts) => {
   }; 
 };
 
+/**
+ * Internal function to keep the loader chain for CSS the same between preprocessors
+ * - Ensure that they all output the same 
+ * - Ensure that any CSS is run through other post process loaders (ie. autoprefixer)
+ */
+function addPreprocessLoader(test, loaderRules) {
+  return {
+    test,
+    use: [
+      { loader: MiniCssExtractPlugin.loader },
+      {
+        loader: "css-loader",
+        options: { sourceMap: true },
+      },
+      {
+        loader: "postcss-loader",
+        options: {
+          postcssOptions: {
+            plugins: [[ "autoprefixer", {} ]]
+          }
+        }
+      },
+      loaderRules
+    ]
+  };
+}
