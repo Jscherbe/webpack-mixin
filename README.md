@@ -100,7 +100,7 @@ Then you will want to add [NPM scripts](https://docs.npmjs.com/cli/v7/using-npm/
 
 This is optional but to take advantage of transpiling, polyfills for old browsers and autoprefixer for CSS properties you need to tell these plugins what your needs are. I recommend using a separate config files versus embedding these settings in your `package.json`. It makes it more portable and also clearer for other developers. The mixin does not install core-js, so that you can install what you need and link it in your Babel configuration. Basic steps below, just examples:
 
-1. [Install core-js](https://www.npmjs.com/package/core-js), this will work with Babel to provide Javascript polyfills for older browsers based on what you use in your project.
+1. [Install core-js](https://www.npmjs.com/package/core-js) and [regenerator-runtime](https://www.npmjs.com/package/regenerator-runtime), these will work with Babel to provide Javascript polyfills for older browsers based on what you use in your project. Note you need to make sure and configure babel to work with version of core-js you installed. You also need to choose how babel handles adding the polyfills (see 'useBuiltIns') in example below for quick explanation. 
 2. [Configure Babel](https://babeljs.io/docs/en/configuration) -  Add a `babel.config.js` file to your project, example below, make sure to specify your core-js version
 3. [Configure Browserlist](https://github.com/browserslist/browserslist) - This is used by Autoprefixer and Babel to understand what browsers you support. The plugins will then add the necessary transpiling and vendor prefixes as needed. Add a `.browserslistrc` file to your project. Example below
 
@@ -110,7 +110,11 @@ This is optional but to take advantage of transpiling, polyfills for old browser
    presets: [
      [
        "@babel/preset-env", { 
-         useBuiltIns: "entry",
+          // 'usage' means look at what I used and add polyfills for browsers I target
+          // 'entry' You import core-js/stable and regenerator-runtime/runtime at start of your code
+          //  and babel will choose the correct versions of those complete polyfill library
+          //  based on your target browsers (results in possible inclusion of polyfills that aren't needed)
+         useBuiltIns: "usage", 
          corejs: "3.18"
        }
      ]
