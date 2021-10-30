@@ -31,7 +31,7 @@ Defaults to look for "src/main.js" as the entry point for your bundle, below is 
   - `main.js` (entry point)
 - `dist/` (bundled assets)
 
-**Images and static folders:*** are copied to the output directory. Incase they are needed outside of webpack (site template, etc). Images can still be required/imported normally within webpack. All other folders are just an example, folder structure is up to you.*
+**Images and static folders:** Are copied to the output directory. Incase they are needed outside of webpack (site template, etc). Images can still be required/imported normally within webpack. All other folders are just an example, folder structure is up to you.
 
 ## Mixin Options
 
