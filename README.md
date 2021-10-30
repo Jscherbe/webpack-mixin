@@ -1,8 +1,8 @@
 # Webpack Mixin
 
-Reusable webpack config for developing traditional sites/themes. Includes things commonly needed, and is setup for proxying the Webpack dev server. 
+Reusable webpack config for developing traditional sites/themes (Drupal, etc). Includes things commonly needed, and is setup for proxying your local dev server (MAMP, etc) through Webpack's dev server. So you can take advantage of Hot Module Replacement, live reload, in browser build errors, etc. Usage instructions and webpack/babel setup below.
 
-The goal of this package is to create a reusable/updatable configuration so that each project can reduce config complexity and focus more on it's specific needs. Also to avoid having to make updates across many configuration files that are basically all the same (loader rules, plugins, etc).
+The goal of this package is to create an easily reusable and updatable default webpack configuration, reduce config complexity and allow project configuration to be focused more on it's specific needs. Load this module as your base configuration and then merge in project requirements (entry/output, loaders, plugins, etc).
 
 ## Provides
 
@@ -11,29 +11,31 @@ The goal of this package is to create a reusable/updatable configuration so that
 - Babel Transpiling / preset-env           
 - SASS (scss), css is extracted      
 - LESS support, css is extracted        
-- Images directory copy and images can be required             
+- Images directory is copied, images can still be required without duplicates
 - Image compression             
 - Dev server setup to proxy local server (ie. MAMP)             
-- Webpack Analyze Vizualizer                 
+- Webpack Bundle Analyzer 
 - Vue SFC setup
 - Not a SPA setup
 
 ## Project Structure
 
-The base assumes the following folder structure. 
+Defaults to look for "src/main.js" as the entry point for your bundle, below is an example folder structure:
 
 - `src/` (processed assets)
-  - `js/`
-  - `scss/`
-  - `less/`
-  - `images/`
-  -` static/` (copied to output)
+  - `js/` (example)
+  - `scss/` (example)
+  - `less/` (example)
+  - `images/` (copied to output directory)
+  - `static/` (copied to output directory)
   - `main.js` (entry point)
 - `dist/` (bundled assets)
 
+**Images and static folders:*** are copied to the output directory. Incase they are needed outside of webpack (site template, etc). Images can still be required/imported normally within webpack. All other folders are just an example, folder structure is up to you.*
+
 ## Mixin Options
 
-Options can be passed in the third argument to the mixin.
+Options object can be passed in the third argument to the mixin.
 
 ```js
   const config = mixin(env, argv, {
