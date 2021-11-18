@@ -4,8 +4,7 @@ Reusable webpack config for developing traditional sites/themes (Drupal, etc). I
 
 The goal of this package is to create an easily reusable and updatable default webpack configuration, reduce config complexity and allow project configuration to be focused more on it's specific needs. Load this module as your base configuration and then merge in project requirements (entry/output, loaders, plugins, etc).
 
-## Provides
-
+**Provides**
 - Default webpack configuration  
 - Includes configured webpack-merge to merge your local configuration with mixin
 - Babel Transpiling / preset-env           
@@ -18,43 +17,13 @@ The goal of this package is to create an easily reusable and updatable default w
 - Vue SFC setup
 - Not a SPA setup
 
-## Project Structure
-
-Defaults to look for "src/main.js" as the entry point for your bundle, below is an example folder structure:
-
-- `src/` (processed assets)
-  - `js/` (example)
-  - `scss/` (example)
-  - `less/` (example)
-  - `images/` (copied to output directory)
-  - `static/` (copied to output directory)
-  - `main.js` (entry point)
-- `dist/` (bundled assets)
-
-**Images and static folders:** Are copied to the output directory. Incase they are needed outside of webpack (site template, etc). Images can still be required/imported normally within webpack. All other folders are just an example, folder structure is up to you.
-
-## Mixin Options
-
-Options object can be passed in the third argument to the mixin.
-
-```js
-  const config = mixin(env, argv, {
-    // Your options here
-  });
-```
-
-Note relative paths are used so that things can stay relative for the dev server output. Paths are converted to absolute as needed.
-
-- `relativeEntryDir` : {String} Relative path to entry directory
-- `relativeOutputDir` : {String} Relative path to output directory
-- `baseDir` : {String} Directory to to prepend to all relative paths (ie. __dirname of your script)
-- `imageminJpegQuality` : {Number} Quality 0-100. See [imagemin-mozjpeg](https://www.npmjs.com/package/imagemin-mozjpeg) for more
-- `imageminJpegProgressive` : {Boolean} Progressive images or not
-- `imageminPngQuality` : {String} PNG quality range ie '70-85'. See [imagemin-webpack-plugin](https://www.npmjs.com/package/imagemin-webpack-plugin) for more
-- `sassAdditionalData` : {String|Function} Additional data to pass to sass (vars, enviroment), see [sass-loader](https://www.npmjs.com/package/sass-loader) for more
-- `lessAdditionalData` : {String|Function} Additional data to pass to less (vars, enviroment), see [less-loader](https://www.npmjs.com/package/less-loader) for more
-
-**Note:** If your needs are very specific, it may be easier to copy the mixin/config into your project as a starting point and then modify it to your own needs. Main config is in `index.js (exports.mixin)`.
+**Table of Contents**
+- [Webpack Mixin](#webpack-mixin)
+  - [Usage](#usage)
+  - [Folder Structure](#folder-structure)
+  - [Options](#options)
+  - [Configuring Babel & Browserlist](#configuring-babel--browserlist)
+  - [Change Log](#change-log)
 
 ## Usage
 
@@ -72,6 +41,10 @@ In your `webpackconfig.js` file.
     // Merge the base with your custom settings
     return merge(config, {
       devServer: {
+        // Example config, reload when Drupal's Twig templates change
+        watchFiles: [ 
+          "./templates/**/*.twig"
+        ],
         proxy: {
           '*': {
             target: "http://MY_MAMP_SITE_URL:8889/"
@@ -98,7 +71,45 @@ Then you will want to add [NPM scripts](https://docs.npmjs.com/cli/v7/using-npm/
 
 **Webpack Bundle Analyzer:** Triggered internally when you pass the env flag "analyze" to the webpack command. It will start a server and launch a browser window to view the visualization. See [webpack-bundle-analyzer](https://www.npmjs.com/package/webpack-bundle-analyzer) for more information.
 
-## Configure Babel & Browserlist
+## Folder Structure
+
+Defaults to look for "src/main.js" as the entry point for your bundle, below is an example folder structure:
+
+- `src/` (processed assets)
+  - `js/` (example)
+  - `scss/` (example)
+  - `less/` (example)
+  - `images/` (copied to output directory)
+  - `static/` (copied to output directory)
+  - `main.js` (entry point)
+- `dist/` (bundled assets)
+
+**Images and static folders:** Are copied to the output directory. Incase they are needed outside of webpack (site template, etc). Images can still be required/imported normally within webpack. All other folders are just an example, folder structure is up to you.
+
+## Options
+
+Options object can be passed in the third argument to the mixin.
+
+```js
+  const config = mixin(env, argv, {
+    // Your options here
+  });
+```
+
+Note relative paths are used so that things can stay relative for the dev server output. Paths are converted to absolute as needed.
+
+- `relativeEntryDir` : {String} Relative path to entry directory
+- `relativeOutputDir` : {String} Relative path to output directory
+- `baseDir` : {String} Directory to to prepend to all relative paths (ie. __dirname of your script)
+- `imageminJpegQuality` : {Number} Quality 0-100. See [imagemin-mozjpeg](https://www.npmjs.com/package/imagemin-mozjpeg) for more
+- `imageminJpegProgressive` : {Boolean} Progressive images or not
+- `imageminPngQuality` : {String} PNG quality range ie '70-85'. See [imagemin-webpack-plugin](https://www.npmjs.com/package/imagemin-webpack-plugin) for more
+- `sassAdditionalData` : {String|Function} Additional data to pass to sass (vars, enviroment), see [sass-loader](https://www.npmjs.com/package/sass-loader) for more
+- `lessAdditionalData` : {String|Function} Additional data to pass to less (vars, enviroment), see [less-loader](https://www.npmjs.com/package/less-loader) for more
+
+**Note:** If your needs are very specific, it may be easier to copy the mixin/config into your project as a starting point and then modify it to your own needs. Main config is in `index.js (exports.mixin)`.
+
+## Configuring Babel & Browserlist
 
 This is optional but to take advantage of transpiling, polyfills for old browsers and autoprefixer for CSS properties you need to tell these plugins what your needs are. I recommend using a separate config files versus embedding these settings in your `package.json`. It makes it more portable and also clearer for other developers. The mixin does not install core-js, so that you can install what you need and link it in your Babel configuration. Basic steps below, just examples:
 
@@ -139,3 +150,8 @@ This is optional but to take advantage of transpiling, polyfills for old browser
   > 0.2%, not dead
   ie >= 11
 ```
+
+## Change Log
+
+- **1.0.6**
+  - Update npm dependencies to latest

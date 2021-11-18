@@ -1,6 +1,6 @@
 {
   "name": "@ulu/webpack-mixin",
-  "version": "1.0.5",
+  "version": "1.0.6",
   "description": "Reusable webpack config for developing traditional sites/themes (Drupal, etc). Not SPA setup. Includes things commonly needed SASS, LESS, extract CSS, proxy server, etc",
   "main": "index.js",
   "scripts": {
@@ -29,12 +29,11 @@
     "autoprefixer",
     "proxy",
     "config",
+    "defaults",
     "MAMP",
     "Drupal",
     "babel",
-    "babel-loader",
-    "vue",
-    "vue-loader"
+    "vue"
   ],
   "author": "Joe Scherben",
   "license": "MIT",
@@ -42,36 +41,36 @@
     "url": "https://github.com/Jscherbe/webpack-mixin/issues"
   },
   "homepage": "https://github.com/Jscherbe/webpack-mixin#readme",
+  "devDependencies": {
+    "vue": "^2.6.14"
+  },
   "dependencies": {
-    "@babel/core": "^7.15.5",
-    "@babel/preset-env": "^7.15.6",
-    "autoprefixer": "^10.3.6",
-    "babel-loader": "^8.2.2",
-    "chalk": "^2.4.2",
-    "copy-webpack-plugin": "^9.0.1",
-    "css-loader": "^6.3.0",
-    "html-webpack-plugin": "^5.3.2",
+    "@babel/core": "^7.16.0",
+    "@babel/preset-env": "^7.16.4",
+    "autoprefixer": "^10.4.0",
+    "babel-loader": "^8.2.3",
+    "chalk": "^4.1.2",
+    "copy-webpack-plugin": "^10.0.0",
+    "css-loader": "^6.5.1",
+    "html-webpack-plugin": "^5.5.0",
     "imagemin-mozjpeg": "^9.0.0",
     "imagemin-webpack-plugin": "^2.4.2",
     "less": "^4.1.2",
     "less-loader": "^10.2.0",
-    "mini-css-extract-plugin": "^2.3.0",
-    "postcss": "^8.3.8",
-    "postcss-loader": "^6.1.1",
-    "sass": "^1.42.1",
-    "sass-loader": "^12.1.0",
-    "style-loader": "^3.3.0",
+    "mini-css-extract-plugin": "^2.4.5",
+    "postcss": "^8.3.11",
+    "postcss-loader": "^6.2.0",
+    "sass": "^1.43.4",
+    "sass-loader": "^12.3.0",
+    "style-loader": "^3.3.1",
     "vue-loader": "^15.9.8",
     "vue-template-compiler": "^2.6.14",
-    "webpack": "^5.56.1",
-    "webpack-bundle-analyzer": "^4.4.2",
-    "webpack-cli": "^4.8.0",
-    "webpack-dev-server": "^4.3.0",
+    "webpack": "^5.64.1",
+    "webpack-bundle-analyzer": "^4.5.0",
+    "webpack-cli": "^4.9.1",
+    "webpack-dev-server": "^4.5.0",
     "webpack-merge": "^5.8.0",
     "webpack-messages": "^2.0.4",
     "yaml-loader": "^0.6.0"
-  },
-  "devDependencies": {
-    "vue": "^2.6.14"
   }
 }
