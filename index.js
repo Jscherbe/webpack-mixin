@@ -1,12 +1,12 @@
-const path                    = require('path');
-const BundleAnalyzerPlugin    = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
+const process                 = require("process");
+const path                    = require("path");
+const BundleAnalyzerPlugin    = require("webpack-bundle-analyzer").BundleAnalyzerPlugin;
 const MiniCssExtractPlugin    = require("mini-css-extract-plugin");
 const CopyPlugin              = require("copy-webpack-plugin");
-const ImageminPlugin          = require('imagemin-webpack-plugin').default;
-const WebpackMessages         = require('webpack-messages');
+const ImageMinimizerPlugin    = require("image-minimizer-webpack-plugin");
+const WebpackMessages         = require("webpack-messages");
 const chalk                   = require("chalk");
-const imageminMozjpeg         = require('imagemin-mozjpeg');
-const VueLoaderPlugin         = require('vue-loader/lib/plugin');
+const VueLoaderPlugin         = require("vue-loader/lib/plugin");
 const { merge }               = require("webpack-merge");
 
 const globOptions             = { ignore: ["**/README*", "**/.gitignore"] };
@@ -15,8 +15,7 @@ const pluginWhen              = (cond, Plugin, opts = {}) => cond ? [ new Plugin
 
 /**
  * Uses webpack-merge
- * - This way we can 
- * - future, could hook in to configure merge settings
+ * - This way we can modify/configure for future use
  * @param configs See webpack-merge
  * @example
  *   const { mixin, merge } = require("@ulu/webpack-mixin");
@@ -29,15 +28,31 @@ exports.merge = (...configs) => {
 
 /**
  * Webpack Base Mixin
- * @param {Object} env Enviroment object passed to webpack.config.js when using a function
+ * @param {Object} env Enviroment object passed to webpack.config.js when using as a function
  * @param {Object} argv Webpack arguments (ie. mode, etc)
- * @param {Object} opts Options for the mixin
+ * @param {Object} opts Options for this mixin
  * @param {String} opts.relativeEntryDir Relative path to entry folder
  * @param {String} opts.relativeOutputDir Relative path to output folder
  * @param {String} opts.baseDir Base directory for all paths (ie. usually __dirname, defaults to cwd())
+ * @param {String} opts.sassAdditionalData Pass additional data to be prepend all sass files (see sass-loader)
+ * @param {String} opts.lessAdditionalData Pass additional data to be prepend all less files (see less-loader)
+ * @param {Number} opts.imageminJpegQuality Imagemin quality setting (see readme for more info)
+ * @param {Boolean} opts.imageminJpegProgressive Should JPEG's output as progressive mode
+ * @param {String} opts.imageminPngQuality Imagemin PNG quality (see readme for more info)
  * @example
  *   const { mixin } = require("@ulu/webpack-mixin");
- *   module.exports = mixin;
+ * 
+ *   // In webpack.config.js
+ *   module.exports = (env, argv) => {
+ *    // Use the mixin to create a default configutation object, 
+ *    const config = mixin(env, argv, { relativeEntryDir: "example-theme/src/" });
+ *    // Then use merge() to add in site specific properties. 
+ *    return merge(config, {
+ *      devServer: {
+ *       proxy: {
+ *        '*': { target: "http://MY_MAMP_SITE_URL:8889/" }
+ *      }
+ *    });
  */
 exports.mixin = (env, argv, opts) => {
 
@@ -47,14 +62,23 @@ exports.mixin = (env, argv, opts) => {
     baseDir: process.cwd(),
     sassAdditionalData: "",
     lessAdditionalData: "",
-    imageminJpegQuality: 75,
-    imageminJpegProgressive: true,
-    imageminPngQuality: "75-85"
+    imageMinimizerProductionOnly: true,
+    imageMinimizerOptions: {
+      minimizerOptions : {
+        plugins: [
+          ["svgo"],
+          ["mozjpeg",  { quality: 75, progressive: true }],
+          ["gifsicle", { interlaced: false }],
+          ["pngquant", { quality: [0.75, 0.85] }]
+        ]
+      }
+    }
   };
   const { analyze } = env;
   const dev = argv.mode === "development";
   const options = Object.assign({}, defaults, opts);
   const { relativeEntryDir, relativeOutputDir, baseDir } = options;
+  const useImageMinimizer = options.imageMinimizerProductionOnly ? !dev : true;
 
   return {
     // No source maps in production
@@ -194,19 +218,8 @@ exports.mixin = (env, argv, opts) => {
           }
         ]
       }),
-      new ImageminPlugin({
-        disable: dev,
-        test: /\.(jpe?g|png|gif|svg)$/i,
-        pngquant: {
-          quality: options.imageminPngQuality
-        },
-        plugins: [
-          imageminMozjpeg({
-            quality: options.imageminJpegQuality,
-            progressive: options.imageminJpegProgressive
-          })
-        ]
-      }),
+      // Make this conditional and not during dev
+      ...pluginWhen(useImageMinimizer, ImageMinimizerPlugin, options.imageMinimizerOptions),
       new VueLoaderPlugin()
     ]
   }; 

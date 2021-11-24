@@ -1,29 +1,32 @@
 # Webpack Mixin
 
-Reusable webpack config for developing traditional sites/themes (Drupal, etc). Includes things commonly needed, and is setup for proxying your local dev server (MAMP, etc) through Webpack's dev server. So you can take advantage of Hot Module Replacement, live reload, in browser build errors, etc. Usage instructions and webpack/babel setup below.
+Reusable webpack config for developing traditional websites (Drupal, Static, etc). Includes things commonly needed for theme building, is setup for proxy your local dev server (MAMP, etc) through Webpack's dev server. So you can take advantage of Hot Module Replacement, live reload, in browser build errors, etc.
 
-The goal of this package is to create an easily reusable and updatable default webpack configuration, reduce config complexity and allow project configuration to be focused more on it's specific needs. Load this module as your base configuration and then merge in project requirements (entry/output, loaders, plugins, etc).
+The goal of this package is to create an easily reusable and updatable shared webpack configuration. In order to reduce configuration complexity and allow project configuration to focus only on it's specific needs. Use the mixin as your defaults/preset and then merge in your specific project requirements (entry/output, loaders, plugins, etc).
 
-**Provides**
-- Default webpack configuration  
-- Includes configured webpack-merge to merge your local configuration with mixin
-- Babel Transpiling / preset-env           
-- SASS (scss), css is extracted      
-- LESS support, css is extracted        
-- Images directory is copied, images can still be required without duplicates
-- Image compression             
-- Dev server setup to proxy local server (ie. MAMP)             
+**Note:** *This is not for Single Page Applications (SPA)*
+
+## Table of Contents
+
+- [Highlights](#highlights)
+- [Usage](#usage)
+- [Folder Structure](#folder-structure)
+- [Options](#options)
+- [Configuring Babel & Browserlist](#configuring-babel--browserlist)
+- [Change Log](#change-log)
+
+## Highlights
+
+- Default webpack configuration 
+- Babel Transpiling / preset-env     
+- CSS extracted      
+- SASS & LESS support    
+- Vue SFC (Single file components)
+- Image compression (configured for lossy)          
+- Webpack Dev server, configured to proxy your local server (ie. MAMP)             
 - Webpack Bundle Analyzer 
-- Vue SFC setup
-- Not a SPA setup
-
-**Table of Contents**
-- [Webpack Mixin](#webpack-mixin)
-  - [Usage](#usage)
-  - [Folder Structure](#folder-structure)
-  - [Options](#options)
-  - [Configuring Babel & Browserlist](#configuring-babel--browserlist)
-  - [Change Log](#change-log)
+- Includes configured webpack-merge to merge your local configuration
+- Images directory is copied to output for use outside of webpack (no hashes)
 
 ## Usage
 
@@ -33,15 +36,14 @@ In your `webpackconfig.js` file.
   const { mixin, merge } = require("@ulu/webpack-mixin.js");
 
   module.exports = (env, argv) => {
-    // Use the mixin to create a configutation object
+    // Use the mixin to create a configutation object with defaults
     const config = mixin(env, argv, {
       relativeEntryDir: "theme/src/"
     });
 
-    // Merge the base with your custom settings
+    // Merge in your custom settings (just an example)
     return merge(config, {
       devServer: {
-        // Example config, reload when Drupal's Twig templates change
         watchFiles: [ 
           "./templates/**/*.twig"
         ],
@@ -101,9 +103,9 @@ Note relative paths are used so that things can stay relative for the dev server
 - `relativeEntryDir` : {String} Relative path to entry directory
 - `relativeOutputDir` : {String} Relative path to output directory
 - `baseDir` : {String} Directory to to prepend to all relative paths (ie. __dirname of your script)
-- `imageminJpegQuality` : {Number} Quality 0-100. See [imagemin-mozjpeg](https://www.npmjs.com/package/imagemin-mozjpeg) for more
-- `imageminJpegProgressive` : {Boolean} Progressive images or not
-- `imageminPngQuality` : {String} PNG quality range ie '70-85'. See [imagemin-webpack-plugin](https://www.npmjs.com/package/imagemin-webpack-plugin) for more
+- `imageMinimizerProductionOnly` : {Boolean} Default true, pass false to run image minimizer plugin during development (will slowdown build time)
+- `imageMinimizerOptions` : {Object} Options to pass to the image minimizer plugin, these are not merged so if you pass options it should be a complete configuration for the plugin. Note you need to install specific imagemin plugins separately. See [image-minimizer-webpack-plugin
+](https://www.npmjs.com/package/image-minimizer-webpack-plugin) for more. The defaults include plugins for (jpeg, png, gif, svg) and (jpg, png) are lossy quality 75%.
 - `sassAdditionalData` : {String|Function} Additional data to pass to sass (vars, enviroment), see [sass-loader](https://www.npmjs.com/package/sass-loader) for more
 - `lessAdditionalData` : {String|Function} Additional data to pass to less (vars, enviroment), see [less-loader](https://www.npmjs.com/package/less-loader) for more
 
@@ -154,4 +156,11 @@ This is optional but to take advantage of transpiling, polyfills for old browser
 ## Change Log
 
 - **1.0.6**
-  - Update npm dependencies to latest
+  - Update NPM dependencies to their latest (ie. Webpack, loaders, babel)
+- **1.0.7** 
+  - Fix incomplete JSDOC comments for options and example
+- **1.0.8** 
+  - Update NPM dependencies (`postcss`, `webpack`) and remove unused `html-webpack-plugin` dependency
+  - Replace outdated `imagemin-webpack-plugin` with `image-minimizer-webpack-plugin`
+  - Remove specific options for imagemin `imageminJpegQuality`, `imageminJpegProgressive`, `imageminPngQuality` and allow user to pass full configuration to new image minimizer plugin using option `imageMinimizerOptions`
+  - Update Readme to account for new settings and changes

@@ -1,4 +1,16 @@
 Tasks:
+  ✔ Migrate from imagemin-webpack-plugin to image-minimizer-webpack-plugin @done
+    * Seems like the package contributors is steering users to this other plugin
+    * Options and API is different
+    * https://github.com/Klathmon/imagemin-webpack-plugin/issues/116 (issue)
+    * https://github.com/webpack-contrib/image-minimizer-webpack-plugin (new plugin)
+    ✔ Need to configure @done
+    ✔ Decide on practical defaults @done
+    ✔ Test @done
+      ✔ Images outputting in correct area @done
+      ✔ Works for static copied assets @done
+      ✔ Images are minimized @done
+      ✔ Images are not minimized during development builds @done
   ✔ Add less loader for old project support and migrations @done
   ✔ Add to readme better examples @done
   ✔ Test to make sure image plugins are compressing @done
