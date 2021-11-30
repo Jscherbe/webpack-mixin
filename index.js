@@ -40,19 +40,24 @@ exports.merge = (...configs) => {
  * @param {Boolean} opts.imageminJpegProgressive Should JPEG's output as progressive mode
  * @param {String} opts.imageminPngQuality Imagemin PNG quality (see readme for more info)
  * @example
- *   const { mixin } = require("@ulu/webpack-mixin");
- * 
- *   // In webpack.config.js
+ *   // webpack.config.js
+ *   const { mixin, merge } = require("@ulu/webpack-mixin");
+ *   
  *   module.exports = (env, argv) => {
- *    // Use the mixin to create a default configutation object, 
- *    const config = mixin(env, argv, { relativeEntryDir: "example-theme/src/" });
- *    // Then use merge() to add in site specific properties. 
- *    return merge(config, {
- *      devServer: {
- *       proxy: {
- *        '*': { target: "http://MY_MAMP_SITE_URL:8889/" }
- *      }
- *    });
+ *   
+ *     const config = mixin(env, argv, { 
+ *       relativeEntryDir: "example-theme/src/" 
+ *     });
+ * 
+ *     return merge(config, {
+ *       devServer: {
+ *        proxy: {
+ *         '*': { 
+ *           target: "http://MY_MAMP_SITE_URL:8889/" 
+ *         }
+ *       }
+ *     });
+ *   };
  */
 exports.mixin = (env, argv, opts) => {
 
@@ -82,9 +87,7 @@ exports.mixin = (env, argv, opts) => {
 
   return {
     // No source maps in production
-    ...objectWhen(!dev, {     
-      devtool:                false 
-    }),
+    ...objectWhen(!dev,       { devtool: false }),
     context:                  path.resolve(baseDir, relativeEntryDir),
     entry:                    path.resolve(baseDir, `${ relativeEntryDir }main.js`),
     output:  {
@@ -98,7 +101,7 @@ exports.mixin = (env, argv, opts) => {
       maxAssetSize:           1000000
     },
     optimization: {
-      ...objectWhen(analyze, { concatenateModules: false })
+      ...objectWhen(analyze,  { concatenateModules: false })
     },
     resolve: {
       alias: {

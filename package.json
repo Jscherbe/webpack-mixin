@@ -1,7 +1,7 @@
 {
   "name": "@ulu/webpack-mixin",
-  "version": "1.0.8",
-  "description": "Reusable webpack config for developing traditional sites/themes (Drupal, etc). Not SPA setup. Includes things commonly needed SASS, LESS, extract CSS, proxy server, etc",
+  "version": "1.0.9",
+  "description": "Reusable base webpack config for developing traditional sites/themes (Drupal, etc). Includes things commonly needed SASS/LESS, image optimization, extract CSS, local server proxy, etc. Not a SPA setup",
   "main": "index.js",
   "scripts": {
     "serve": "webpack serve --mode development --progress --stats minimal",

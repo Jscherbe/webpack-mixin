@@ -36,7 +36,7 @@ In your `webpackconfig.js` file.
   const { mixin, merge } = require("@ulu/webpack-mixin.js");
 
   module.exports = (env, argv) => {
-    // Use the mixin to create a configutation object with defaults
+    // Use the mixin to create a configutation object
     const config = mixin(env, argv, {
       relativeEntryDir: "theme/src/"
     });
@@ -44,12 +44,10 @@ In your `webpackconfig.js` file.
     // Merge in your custom settings (just an example)
     return merge(config, {
       devServer: {
-        watchFiles: [ 
-          "./templates/**/*.twig"
-        ],
+        watchFiles: ["./templates/**/*.twig"],
         proxy: {
-          '*': {
-            target: "http://MY_MAMP_SITE_URL:8889/"
+          '*': { 
+            target: "http://MY_MAMP_SITE_URL:8889/" 
           }
         }  
       }
@@ -90,24 +88,21 @@ Defaults to look for "src/main.js" as the entry point for your bundle, below is 
 
 ## Options
 
-Options object can be passed in the third argument to the mixin.
+Options object can be passed in the third argument to the mixin. Note relative paths are used so that things can stay relative for the dev server output. Paths are converted to absolute internally when needed.
 
 ```js
-  const config = mixin(env, argv, {
-    // Your options here
-  });
+  const config = mixin(env, argv, {});
 ```
 
-Note relative paths are used so that things can stay relative for the dev server output. Paths are converted to absolute as needed.
-
-- `relativeEntryDir` : {String} Relative path to entry directory
-- `relativeOutputDir` : {String} Relative path to output directory
-- `baseDir` : {String} Directory to to prepend to all relative paths (ie. __dirname of your script)
-- `imageMinimizerProductionOnly` : {Boolean} Default true, pass false to run image minimizer plugin during development (will slowdown build time)
-- `imageMinimizerOptions` : {Object} Options to pass to the image minimizer plugin, these are not merged so if you pass options it should be a complete configuration for the plugin. Note you need to install specific imagemin plugins separately. See [image-minimizer-webpack-plugin
-](https://www.npmjs.com/package/image-minimizer-webpack-plugin) for more. The defaults include plugins for (jpeg, png, gif, svg) and (jpg, png) are lossy quality 75%.
-- `sassAdditionalData` : {String|Function} Additional data to pass to sass (vars, enviroment), see [sass-loader](https://www.npmjs.com/package/sass-loader) for more
-- `lessAdditionalData` : {String|Function} Additional data to pass to less (vars, enviroment), see [less-loader](https://www.npmjs.com/package/less-loader) for more
+| Property | Type | Default | Description |
+| -------- | ---- | ------- | ----------- |
+| `relativeEntryDir` | String | `"src/"` | Relative path to entry directory |
+| `relativeOutputDir` | String | `"dist/"` | Relative path to output directory |
+| `baseDir` | String | process.cwd() | Directory to prepend to all relative paths (ie. __dirname of your script) |
+| `sassAdditionalData` | String/Function | `""` | Additional data to pass to Sass (vars, mixins, etc), Useful for passing dynamic/enviroment variables. See [sass-loader](https://www.npmjs.com/package/sass-loader) for more |
+| `lessAdditionalData` | String/Function | `""` | Additional data to pass to Less (vars, mixins, etc), Useful for passing dynamic/enviroment variables. See [less-loader](https://www.npmjs.com/package/less-loader) for more |
+| `imageMinimizerOptions` | Object | true | Options to pass to the image minimizer plugin, these are not merged so if you pass options it should be a complete configuration for the plugin. Note you need to install specific imagemin plugins separately. See [image-minimizer-webpack-plugin](https://www.npmjs.com/package/image-minimizer-webpack-plugin) for more. The defaults include plugins for (jpeg, png, gif, svg) and (jpg, png) are lossy quality 75%. |
+| `imageMinimizerProductionOnly` | Boolean | true | Passing false will run the image optimization plugin during development mode (will slowdown build time) |
 
 **Note:** If your needs are very specific, it may be easier to copy the mixin/config into your project as a starting point and then modify it to your own needs. Main config is in `index.js (exports.mixin)`.
 
@@ -164,3 +159,5 @@ This is optional but to take advantage of transpiling, polyfills for old browser
   - Replace outdated `imagemin-webpack-plugin` with `image-minimizer-webpack-plugin`
   - Remove specific options for imagemin `imageminJpegQuality`, `imageminJpegProgressive`, `imageminPngQuality` and allow user to pass full configuration to new image minimizer plugin using option `imageMinimizerOptions`
   - Update Readme to account for new settings and changes
+- **1.0.9** 
+  - Readme tweaks (options to table for clarity)
