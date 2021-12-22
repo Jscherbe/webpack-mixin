@@ -4,16 +4,20 @@ Reusable webpack config for developing traditional websites (Drupal, Static, etc
 
 The goal of this package is to create an easily reusable and updatable shared webpack configuration. In order to reduce configuration complexity and allow project configuration to focus only on it's specific needs. Use the mixin as your defaults/preset and then merge in your specific project requirements (entry/output, loaders, plugins, etc).
 
+If you encounter bugs or have a feature request, feel free to open an issue on [github](https://github.com/Jscherbe/webpack-mixin/issues)
+
 **Note:** *This is not for Single Page Applications (SPA)*
 
 ## Table of Contents
 
-- [Highlights](#highlights)
-- [Usage](#usage)
-- [Folder Structure](#folder-structure)
-- [Options](#options)
-- [Configuring Babel & Browserlist](#configuring-babel--browserlist)
-- [Change Log](#change-log)
+- [Webpack Mixin](#webpack-mixin)
+  - [Table of Contents](#table-of-contents)
+  - [Highlights](#highlights)
+  - [Usage](#usage)
+  - [Folder Structure](#folder-structure)
+  - [Options](#options)
+  - [Configuring Babel & Browserlist](#configuring-babel--browserlist)
+  - [Change Log](#change-log)
 
 ## Highlights
 
@@ -103,16 +107,20 @@ Options object can be passed in the third argument to the mixin. Note relative p
 | `lessAdditionalData` | String/Function | `""` | Additional data to pass to Less (vars, mixins, etc), Useful for passing dynamic/enviroment variables. See [less-loader](https://www.npmjs.com/package/less-loader) for more |
 | `imageMinimizerOptions` | Object | true | Options to pass to the image minimizer plugin, these are not merged so if you pass options it should be a complete configuration for the plugin. Note you need to install specific imagemin plugins separately. See [image-minimizer-webpack-plugin](https://www.npmjs.com/package/image-minimizer-webpack-plugin) for more. The defaults include plugins for (jpeg, png, gif, svg) and (jpg, png) are lossy quality 75%. |
 | `imageMinimizerProductionOnly` | Boolean | true | Passing false will run the image optimization plugin during development mode (will slowdown build time) |
+| `transpiledExclude` | Array | `[/node_modules/]` | Transpiler excludes (regex/string/path) (see > webpack module conditions to learn more /syntax) |
+| `transpiledExcludeNot` | Array | `[]` | Which of the excluded modules should be included (since we don't transpile node_modules use this to include the one's that need transpiling (regex/string/path) (see > webpack module conditions to learn more /syntax) |
 
 **Note:** If your needs are very specific, it may be easier to copy the mixin/config into your project as a starting point and then modify it to your own needs. Main config is in `index.js (exports.mixin)`.
 
 ## Configuring Babel & Browserlist
 
-This is optional but to take advantage of transpiling, polyfills for old browsers and autoprefixer for CSS properties you need to tell these plugins what your needs are. I recommend using a separate config files versus embedding these settings in your `package.json`. It makes it more portable and also clearer for other developers. The mixin does not install core-js, so that you can install what you need and link it in your Babel configuration. Basic steps below, just examples:
+This is optional but to take advantage of transpiling, polyfills for old browsers and autoprefixer for CSS properties you need to tell these plugins what your needs are. I recommend using a separate config files versus embedding these settings in your `package.json`. It makes it more portable and also clearer for other developers. The mixin does not install core-js, so that you can install what you need and link it in your Babel configuration. Basic steps below to setting up babel and brow, just examples:
 
 1. [Install core-js](https://www.npmjs.com/package/core-js) and [regenerator-runtime](https://www.npmjs.com/package/regenerator-runtime), these will work with Babel to provide Javascript polyfills for older browsers based on what you use in your project. Note you need to make sure and configure babel to work with version of core-js you installed. You also need to choose how babel handles adding the polyfills (see 'useBuiltIns') in example below for quick explanation. 
 2. [Configure Babel](https://babeljs.io/docs/en/configuration) -  Add a `babel.config.js` file to your project, example below, make sure to specify your core-js version
 3. [Configure Browserlist](https://github.com/browserslist/browserslist) - This is used by Autoprefixer and Babel to understand what browsers you support. The plugins will then add the necessary transpiling and vendor prefixes as needed. Add a `.browserslistrc` file to your project. Example below
+
+**Note:** All node_modules are excluded from transpiling by default you can use the mixin's `options.transpiledExcludeNot` to add the modules you know need to be transpiled. Or if you would like to transpile everything, set `options.transpiledExclude` to an empty array. 
 
 **Example `babel.config.js` Configuration**
 ```js
@@ -149,15 +157,20 @@ This is optional but to take advantage of transpiling, polyfills for old browser
 ```
 
 ## Change Log
-
-- **1.0.6**
-  - Update NPM dependencies to their latest (ie. Webpack, loaders, babel)
-- **1.0.7** 
-  - Fix incomplete JSDOC comments for options and example
+- **1.0.11** 
+  - Fix typo in readme
+- **1.0.10** 
+  - Add options for `transpiledExclude` and `transpiledExcludeNot` so that user can easily add specific node modules that need transpiling while still ignoring the node_modules directory completely. Also `transpiledExclude` allows pass empty array if they want to transpile everything.
+- **1.0.9** 
+  - Readme tweaks (options to table for clarity)
 - **1.0.8** 
   - Update NPM dependencies (`postcss`, `webpack`) and remove unused `html-webpack-plugin` dependency
   - Replace outdated `imagemin-webpack-plugin` with `image-minimizer-webpack-plugin`
   - Remove specific options for imagemin `imageminJpegQuality`, `imageminJpegProgressive`, `imageminPngQuality` and allow user to pass full configuration to new image minimizer plugin using option `imageMinimizerOptions`
   - Update Readme to account for new settings and changes
-- **1.0.9** 
-  - Readme tweaks (options to table for clarity)
+- **1.0.7** 
+  - Fix incomplete JSDOC comments for options and example
+- **1.0.6**
+  - Update NPM dependencies to their latest (ie. Webpack, loaders, babel)
+
+

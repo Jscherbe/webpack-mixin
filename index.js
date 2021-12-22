@@ -39,6 +39,8 @@ exports.merge = (...configs) => {
  * @param {Number} opts.imageminJpegQuality Imagemin quality setting (see readme for more info)
  * @param {Boolean} opts.imageminJpegProgressive Should JPEG's output as progressive mode
  * @param {String} opts.imageminPngQuality Imagemin PNG quality (see readme for more info)
+ * @param {Array} opts.transpiledExclude Transpiler excludes, default node_modules (regex/string/path) (see > webpack module conditions to learn more /syntax)
+ * @param {Array} opts.transpiledExcludeNot Which of the excluded modules should be included (since we don't transpile node_modules use this to include the one's that need transpiling (regex/string/path) (see > webpack module conditions to learn more /syntax)
  * @example
  *   // webpack.config.js
  *   const { mixin, merge } = require("@ulu/webpack-mixin");
@@ -77,7 +79,11 @@ exports.mixin = (env, argv, opts) => {
           ["pngquant", { quality: [0.75, 0.85] }]
         ]
       }
-    }
+    },
+    transpiledExclude: [
+      /node_modules/
+    ],
+    transpiledExcludeNot: [],
   };
   const { analyze } = env;
   const dev = argv.mode === "development";
@@ -129,8 +135,13 @@ exports.mixin = (env, argv, opts) => {
       rules: [
         {
           test: /\.m?js$/,
-          exclude: /node_modules/,
-          include: /@ulu/,
+          exclude: {
+            and: options.transpiledExclude,
+            not: [
+              /@ulu/,
+              ...options.transpiledExcludeNot
+            ]
+          },
           use: {
             loader: 'babel-loader',
             options: {
