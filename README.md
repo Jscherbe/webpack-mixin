@@ -157,6 +157,10 @@ This is optional but to take advantage of transpiling, polyfills for old browser
 ```
 
 ## Change Log
+- **1.0.12** 
+  - Update dependencies (minor releases)
+  - Update `image-minimizer-webpack-plugin` (major release) and all `imagemin` related plugins. **Note: The options API for this plugin has changed from the previous version.** If you made changes to image minification options using the mixin's `options.imageMinimizerOptions`, you will need to adapt it to the new options structure (change key "minimizerOptions" to "minimizer", nest `minimizerOptions.plugins` to `minimizer.options.plugins`, set `minimzer.implementation` to the preferred plugin (imagemin/squoosh) see their [docs](https://www.npmjs.com/package/image-minimizer-webpack-plugin)).
+  - Make sure vue-loader implementation is up-to-date. Add a rule to **not** exclude  `.vue.js` files from Babel transpilation (even if within `node_modules/`). As vue-loader will extract script portion from SFC and add .js to it (see vue loader [migration guide](https://vue-loader.vuejs.org/migrating.html#importing-sfcs-from-dependencies)). Add `vue-style-loader` before `css-loader`.
 - **1.0.11** 
   - Fix typo in readme
 - **1.0.10** 

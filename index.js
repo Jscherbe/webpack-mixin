@@ -6,7 +6,7 @@ const CopyPlugin              = require("copy-webpack-plugin");
 const ImageMinimizerPlugin    = require("image-minimizer-webpack-plugin");
 const WebpackMessages         = require("webpack-messages");
 const chalk                   = require("chalk");
-const VueLoaderPlugin         = require("vue-loader/lib/plugin");
+const { VueLoaderPlugin }     = require("vue-loader");
 const { merge }               = require("webpack-merge");
 
 const globOptions             = { ignore: ["**/README*", "**/.gitignore"] };
@@ -71,13 +71,16 @@ exports.mixin = (env, argv, opts) => {
     lessAdditionalData: "",
     imageMinimizerProductionOnly: true,
     imageMinimizerOptions: {
-      minimizerOptions : {
-        plugins: [
-          ["svgo"],
-          ["mozjpeg",  { quality: 75, progressive: true }],
-          ["gifsicle", { interlaced: false }],
-          ["pngquant", { quality: [0.75, 0.85] }]
-        ]
+      minimizer: {
+        implementation: ImageMinimizerPlugin.imageminMinify,
+        options: {
+          plugins: [
+            ["svgo"],
+            ["mozjpeg",  { quality: 75, progressive: true }],
+            ["gifsicle", { interlaced: false }],
+            ["pngquant", { quality: [0.75, 0.85] }]
+          ]
+        }
       }
     },
     transpiledExclude: [
@@ -139,6 +142,7 @@ exports.mixin = (env, argv, opts) => {
             and: options.transpiledExclude,
             not: [
               /@ulu/,
+              /\.vue\.js/,
               ...options.transpiledExcludeNot
             ]
           },
@@ -248,7 +252,12 @@ function addPreprocessLoader(test, loaderRules) {
   return {
     test,
     use: [
-      { loader: MiniCssExtractPlugin.loader },
+      {
+        loader: "vue-style-loader"
+      },
+      { 
+        loader: MiniCssExtractPlugin.loader 
+      },
       {
         loader: "css-loader",
         options: { sourceMap: true },
