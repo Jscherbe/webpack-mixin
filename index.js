@@ -116,6 +116,7 @@ exports.mixin = (env, argv, opts) => {
       alias: {
         '@NodeModules' :      path.join(baseDir, "node_modules"),
         '@Scss' :             path.join(baseDir, relativeEntryDir, "/scss/"),
+        '@Less' :             path.join(baseDir, relativeEntryDir, "/scss/"),
         '@Images' :           path.join(baseDir, relativeEntryDir, "/images/")
       }
     },
@@ -252,11 +253,8 @@ function addPreprocessLoader(test, loaderRules) {
   return {
     test,
     use: [
-      {
-        loader: "vue-style-loader"
-      },
       { 
-        loader: MiniCssExtractPlugin.loader 
+        loader: MiniCssExtractPlugin.loader
       },
       {
         loader: "css-loader",

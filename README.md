@@ -17,6 +17,7 @@ If you encounter bugs or have a feature request, feel free to open an issue on [
   - [Folder Structure](#folder-structure)
   - [Options](#options)
   - [Configuring Babel & Browserlist](#configuring-babel--browserlist)
+  - [Vue Setup](#vue-setup)
   - [Change Log](#change-log)
 
 ## Highlights
@@ -77,18 +78,18 @@ Then you will want to add [NPM scripts](https://docs.npmjs.com/cli/v7/using-npm/
 
 ## Folder Structure
 
-Defaults to look for "src/main.js" as the entry point for your bundle, below is an example folder structure:
+By default "src/main.js" is used as the entry point for the bundle. Images and static folders are copied to the output directory. Incase they are needed outside of webpack (site template, etc). Images can still be required/imported normally within webpack. All other folders are just an example, folder structure is up to you. Aliases have been provided as  shortcuts for common folders. Example folder strucutre below:
 
-- `src/` (processed assets)
-  - `js/` (example)
-  - `scss/` (example)
-  - `less/` (example)
-  - `images/` (copied to output directory)
-  - `static/` (copied to output directory)
+- `src/` (unbundled assets)
   - `main.js` (entry point)
+  - `js/`  
+  - `scss/` (alias: `@Scss`)
+  - `less/` (alias: `@Less`)
+  - `images/` (copied to output directory, alias: `@Images`)
+  - `static/` (copied to output directory)
 - `dist/` (bundled assets)
 
-**Images and static folders:** Are copied to the output directory. Incase they are needed outside of webpack (site template, etc). Images can still be required/imported normally within webpack. All other folders are just an example, folder structure is up to you.
+*In addition to the aliases above, there is `@NodeModules` that points to the projects `./node_modules` directory.*
 
 ## Options
 
@@ -156,7 +157,22 @@ This is optional but to take advantage of transpiling, polyfills for old browser
   ie >= 11
 ```
 
+## Vue Setup
+
+The mixin **does not** provide Vue, it only provides the configuration for the `vue-loader`. You will need to install Vue and their template compiler. The template compiler is used by the vue-loader but is not included because it needs to match the **exact version** of the Vue installed in your project.
+
+```
+npm install --save vue vue-template-compiler 
+```
+
+Vue Setup
+
 ## Change Log
+- **1.0.13** 
+  - Fix incorrect use of vue-style-loader, currently all styles are extracted 
+  - Add '@Less' webpack resolve alias to point to "./src/less" 
+  - Remove dependency `vue-template-compiler`, this needs to be installed by the user and should match the version of Vue they are using
+  - Update readme (vue setup instructions, aliases for directories)
 - **1.0.12** 
   - Update dependencies (minor releases)
   - Update `image-minimizer-webpack-plugin` (major release) and all `imagemin` related plugins. **Note: The options API for this plugin has changed from the previous version.** If you made changes to image minification options using the mixin's `options.imageMinimizerOptions`, you will need to adapt it to the new options structure (change key "minimizerOptions" to "minimizer", nest `minimizerOptions.plugins` to `minimizer.options.plugins`, set `minimzer.implementation` to the preferred plugin (imagemin/squoosh) see their [docs](https://www.npmjs.com/package/image-minimizer-webpack-plugin)).
