@@ -11,7 +11,7 @@
 </template>
 
 <script>
-  import AppComponent from "./AppComponent.vue";
+  import AppComponent from "./AppComponent.vue"; // intentionally not having extension to test resolve
   import data from "./data.yaml";
 
   export default {

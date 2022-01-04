@@ -166,6 +166,8 @@ npm install --save vue vue-template-compiler
 ```
 
 ## Change Log
+- **1.0.14** 
+  - Allow import to ".vue" files to be resolved without extension (add ".vue" to the list resolve.extensions but keep defaults)
 - **1.0.13** 
   - Fix incorrect use of vue-style-loader, currently all styles are extracted 
   - Add '@Less' webpack resolve alias to point to "./src/less" 

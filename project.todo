@@ -15,7 +15,7 @@ Tasks:
   ✔ Add to readme better examples @done
   ✔ Test to make sure image plugins are compressing @done
 Questions:
-  ☐ Should the modue not include major dependencies so that we can rely on user's version (users preference)? @unresolved
+  ✔ Should the modue not include major dependencies so that we can rely on user's version (users preference)? [yes - this should be indenpendent] @unresolved @done
     * webpack, webpack-dev-server, webpack-cli, etc
     * Need to think about this, it's nice for me to include the corresponding version since it aligns with the code in the config and the plugins/loaders being used
     * User has control over their browserlist, and babel.config and can install a different verison of webpack if needed.

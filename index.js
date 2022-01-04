@@ -118,7 +118,8 @@ exports.mixin = (env, argv, opts) => {
         '@Scss' :             path.join(baseDir, relativeEntryDir, "/scss/"),
         '@Less' :             path.join(baseDir, relativeEntryDir, "/scss/"),
         '@Images' :           path.join(baseDir, relativeEntryDir, "/images/")
-      }
+      },
+      extensions: [".vue", "..."]
     },
     devServer: {
       open:       true,
