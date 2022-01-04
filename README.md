@@ -165,8 +165,6 @@ The mixin **does not** provide Vue, it only provides the configuration for the `
 npm install --save vue vue-template-compiler 
 ```
 
-Vue Setup
-
 ## Change Log
 - **1.0.13** 
   - Fix incorrect use of vue-style-loader, currently all styles are extracted 
