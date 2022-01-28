@@ -1,4 +1,14 @@
+Publishing:
+  * npm publish --access public
 Tasks:
+  ☐ Maybe need the user to provide one additional path (optional) @needs-more-thought
+    * relativeBaseDir (name  should be simliary to public path) - The location from the web root (when running in a server like a Drupal site at /themes/custom/mytheme for example)
+    * This is going to be used to determine the publicPath
+      * Should they just provide the publicPath? Why would the mixin ever need the base directory but not to the assets ie /themes/custom/mytheme vs /themes/custom/mytheme/dist
+        * This would force the user to make sure they populate both correctly vs two options and joining within
+      * Although you could just have an option for public path or leave it as it currently is but it doesn't help accelerate and user needs to be aware that they need to configure that for dev server HMR stuff
+    * I just always need to set public path so
+    * Currently put an explanation in the readme
   ✔ Migrate from imagemin-webpack-plugin to image-minimizer-webpack-plugin @done
     * Seems like the package contributors is steering users to this other plugin
     * Options and API is different

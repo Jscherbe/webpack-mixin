@@ -1,8 +1,8 @@
 # Webpack Mixin
 
-Reusable webpack config for developing traditional websites (Drupal, Static, etc). Includes things commonly needed for theme building, is setup for proxy your local dev server (MAMP, etc) through Webpack's dev server. So you can take advantage of Hot Module Replacement, live reload, in browser build errors, etc.
+Reusable preset webpack configuration for developing traditional websites (Drupal, Static, etc). Includes things commonly needed for theme building, is setup for proxy your local dev server (MAMP, etc) through Webpack's dev server. So you can take advantage of Hot Module Replacement (HMR), live reload, in browser build errors, etc.
 
-The goal of this package is to create an easily reusable and updatable shared webpack configuration. In order to reduce configuration complexity and allow project configuration to focus only on it's specific needs. Use the mixin as your defaults/preset and then merge in your specific project requirements (entry/output, loaders, plugins, etc).
+The goal of this package is to create an easily reusable and updatable shared webpack configuration. In order to reduce configuration complexity and allow project configuration to focus only on it's specific needs. Use the mixin as your defaults/preset and then merge in your specific project requirements (entry/output, loaders, plugins, etc). This project will regularly check it's dependencies for updates (webpack, sass, etc). Updates will be listed in the [Change Log](#change-log). 
 
 If you encounter bugs or have a feature request, feel free to open an issue on [github](https://github.com/Jscherbe/webpack-mixin/issues)
 
@@ -22,20 +22,26 @@ If you encounter bugs or have a feature request, feel free to open an issue on [
 
 ## Highlights
 
-- Default webpack configuration 
-- Babel Transpiling / preset-env     
+- Preset Webpack configuration 
+- Babel Transpiling (preset-env)
 - CSS extracted      
 - SASS & LESS support    
+- YAML 
 - Vue SFC (Single file components)
 - Image compression (configured for lossy)          
-- Webpack Dev server, configured to proxy your local server (ie. MAMP)             
+- Webpack Dev server
+  - Configured for proxy your local server (ie. MAMP)             
+  - Hot module Replacement
 - Webpack Bundle Analyzer 
-- Includes configured webpack-merge to merge your local configuration
-- Images directory is copied to output for use outside of webpack (no hashes)
+- Includes webpack-merge to merge your local configuration
+- Images and Static directory is copied to output bundle
+  - No hashes on images so that you can use these optimized images in templates (outside of webpack)
 
 ## Usage
 
-In your `webpackconfig.js` file.
+Example below of usage in your `webpack.config.js` file.
+
+
 
 ```js
   const { mixin, merge } = require("@ulu/webpack-mixin.js");
@@ -48,6 +54,9 @@ In your `webpackconfig.js` file.
 
     // Merge in your custom settings (just an example)
     return merge(config, {
+      output:  {
+        publicPath: "/themes/custom/mytheme/dist/"
+      },
       devServer: {
         watchFiles: ["./templates/**/*.twig"],
         proxy: {
@@ -59,6 +68,8 @@ In your `webpackconfig.js` file.
     });
   };
 ```
+
+**Note:** Set the `publicPath` yourself, this should be an absolute path from your public directory (server root, where the browser loads paths from) to the bundled directory (ie. dist). In the example below Drupal serves from '`/www/` so the path '`/themes/custom/mytheme/dist/` is absolute path from there to the `dist` directory in the theme. This is needed for Hot Module Replacement.
 
 Then you will want to add [NPM scripts](https://docs.npmjs.com/cli/v7/using-npm/scripts) to your projects `package.json` to run webpack-cli in the different modes. Below is an example of the scripts to add:
 
@@ -166,6 +177,9 @@ npm install --save vue vue-template-compiler
 ```
 
 ## Change Log
+- **1.0.16** 
+  - Update dependencies (minor releases only) - `webpack sass autoprefixer copy-webpack-plugin image-minimizer-webpack-plugin mini-css-extract-plugin webpack-cli webpack-dev-server`
+  - Add reminder in readme to set publicPath
 - **1.0.14** 
   - Allow import to ".vue" files to be resolved without extension (add ".vue" to the list resolve.extensions but keep defaults)
 - **1.0.13** 
