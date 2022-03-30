@@ -64,6 +64,7 @@ exports.merge = (...configs) => {
 exports.mixin = (env, argv, opts) => {
 
   const defaults = {
+    miniCssExtractPluginOptions: {},
     relativeEntryDir: "src/", 
     relativeOutputDir: "dist/",
     baseDir: process.cwd(),
@@ -223,7 +224,7 @@ exports.mixin = (env, argv, opts) => {
           return console.log(`\n${ label }: ${ message } `);
         }
       }),
-      new MiniCssExtractPlugin(),
+      new MiniCssExtractPlugin(options.miniCssExtractPluginOptions),
       new CopyPlugin({
         patterns: [
           { 

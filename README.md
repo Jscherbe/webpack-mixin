@@ -1,6 +1,6 @@
 # Webpack Mixin
 
-Reusable preset webpack configuration for developing traditional websites (Drupal, Static, etc). Includes things commonly needed for theme building, is setup for proxy your local dev server (MAMP, etc) through Webpack's dev server. So you can take advantage of Hot Module Replacement (HMR), live reload, in browser build errors, etc.
+Reusable webpack configuration for developing traditional websites (Drupal, Static, etc). Includes things commonly needed for theme building, is setup for proxy your local dev server (MAMP, etc) through Webpack's dev server. So you can take advantage of Hot Module Replacement (HMR), live reload, in browser build errors, etc.
 
 The goal of this package is to create an easily reusable and updatable shared webpack configuration. In order to reduce configuration complexity and allow project configuration to focus only on it's specific needs. Use the mixin as your defaults/preset and then merge in your specific project requirements (entry/output, loaders, plugins, etc). This project will regularly check it's dependencies for updates (webpack, sass, etc). Updates will be listed in the [Change Log](#change-log). 
 
@@ -112,6 +112,7 @@ Options object can be passed in the third argument to the mixin. Note relative p
 
 | Property | Type | Default | Description |
 | -------- | ---- | ------- | ----------- |
+| `miniCssExtractPluginOptions` | Object | `{}` | Options to pass to the plugin |
 | `relativeEntryDir` | String | `"src/"` | Relative path to entry directory |
 | `relativeOutputDir` | String | `"dist/"` | Relative path to output directory |
 | `baseDir` | String | process.cwd() | Directory to prepend to all relative paths (ie. __dirname of your script) |
@@ -177,6 +178,9 @@ npm install --save vue vue-template-compiler
 ```
 
 ## Change Log
+- **1.0.17** 
+  - Add option for "miniCssExtractPluginOptions" 
+  - Update dependencies (minor releases) - `webpack webpack-dev-server sass sass-loader @babel/core @babel/preset-env autoprefixer babel-loader copy-webpack-plugin css-loader mini-css-extract-plugin postcss`
 - **1.0.16** 
   - Update dependencies (minor releases only) - `webpack sass autoprefixer copy-webpack-plugin image-minimizer-webpack-plugin mini-css-extract-plugin webpack-cli webpack-dev-server`
   - Add reminder in readme to set publicPath
